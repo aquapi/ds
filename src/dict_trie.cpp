@@ -43,8 +43,7 @@ struct Trie {
     auto ptr = root;
 
     for (int ch : s) {
-      ch -= 'a';
-      ptr = ptr->child[ch];
+      ptr = ptr->child[ch - 'a'];
 
       if (ptr == nil)
         return false;

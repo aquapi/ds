@@ -1,8 +1,20 @@
 #include <cmath>
-constexpr const int maxn = 1e5, treeLast = maxn * 4, treeSize = treeLast + 1;
+constexpr const int last = 1e5, treeLast = last * 4, treeSize = treeLast + 1;
 
 // Segment tree internals
 int tree[treeSize];
+
+void initID(int id, int left, int right, int list[]) {
+  if (left == right)
+    tree[id] = list[left];
+
+  int mid = (left + right) / 2, leftID = id << 1, rightID = leftID + 1;
+
+  initID(id << 1, left, mid, list);
+  initID((id << 1) + 1, mid + 1, right, list);
+
+  tree[id] = std::max(tree[leftID], tree[rightID]);
+}
 
 void updateID(int id, int left, int right, int idx, int value) {
   if (idx < left || idx > right)
@@ -36,5 +48,10 @@ int queryID(int id, int left, int right, int rangeStart, int rangeEnd) {
 }
 
 // Methods to use
-void update(int idx, int value) { updateID(1, 1, treeLast, idx, value); }
-int get() { return queryID(1, 1, treeLast, 1, treeLast); }
+void init(int list[]) { initID(1, 1, last, list); }
+
+void update(int idx, int value) { updateID(1, 1, last, idx, value); }
+
+int query(int rangeStart = 1, int rangeEnd = last) {
+  return queryID(1, 1, last, rangeStart, rangeEnd);
+}

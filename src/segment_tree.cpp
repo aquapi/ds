@@ -1,5 +1,5 @@
 #include <cmath>
-constexpr const int last = 1e5, treeLast = last * 4, treeSize = treeLast + 1;
+constexpr const int last = 1e5, treeSize = last * 4 + 1;
 
 // Segment tree internals
 int tree[treeSize];
@@ -13,6 +13,7 @@ void initID(int id, int left, int right, int list[]) {
   initID(id << 1, left, mid, list);
   initID((id << 1) + 1, mid + 1, right, list);
 
+  // Main
   tree[id] = std::max(tree[leftID], tree[rightID]);
 }
 
@@ -43,6 +44,7 @@ int queryID(int id, int left, int right, int rangeStart, int rangeEnd) {
 
   int mid = (left + right) / 2;
 
+  // Main
   return std::max(queryID(id << 1, left, mid, rangeStart, rangeEnd),
                   queryID((id << 1) + 1, mid + 1, right, rangeStart, rangeEnd));
 }
